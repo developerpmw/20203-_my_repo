@@ -1,0 +1,108 @@
+import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.Random;
+
+public class quiz_3week {
+	
+	public static void quiz1() {
+		Scanner scanner;
+		int n, m;
+		while(true) {
+			scanner = new Scanner(System.in);
+			System.out.print("곱하고자 하는 두 수 입력>>");
+			try {
+				n = scanner.nextInt();
+				m = scanner.nextInt();
+			}
+			catch(InputMismatchException e) {
+				System.out.println("실수는 입력하면 안됩니다.");
+				continue;
+			}
+			System.out.println(n+"x"+m+"="+n*m);
+			break;
+		}
+	}
+	
+	public static void quiz2() {
+		System.out.println("컴퓨터와 가위 바위 보 게임을 합니다.");
+		Scanner scanner;
+		String user_rsp, computer_rsp="";
+		Random random = new Random();
+		int user_rsp_num=0, computer_rsp_num;
+		while(true) {
+			scanner = new Scanner(System.in);
+			System.out.print("가위 바위 보!>>");
+			user_rsp=scanner.next();
+			if (user_rsp.equals("그만")) break;
+			switch (user_rsp) {
+				case "가위": {
+					user_rsp_num=0;
+					break;
+				}
+				case "바위": {
+					user_rsp_num=1;
+					break;
+				}
+				case "보": {
+					user_rsp_num=2;
+					break;
+				}
+			}
+			computer_rsp_num=random.nextInt(3);
+			switch (computer_rsp_num) {
+				case 0: {
+					computer_rsp="가위";
+					break;
+				}
+				case 1: {
+					computer_rsp="바위";
+					break;
+				}
+				case 2: {
+					computer_rsp="보";
+					break;
+				}
+			}
+			System.out.print("사용자 = "+user_rsp+" , 컴퓨터 = "+computer_rsp+", ");
+			switch (user_rsp_num-computer_rsp_num) {
+				case 0: {
+					System.out.print("비겼");
+					break;
+				}
+				case 1:
+				case -2: {
+					System.out.print("사용자가 이겼");
+					break;
+				}
+				case -1:
+				case 2: {
+					System.out.print("사용자가 졌");
+					break;
+				}
+			}
+			System.out.println("습니다.");
+		}
+		System.out.println("게임을 종료합니다...");
+	}
+
+	public static void main(String[] args) {
+		while (true) {
+			System.out.print("\n1,2 중 택 1 (1:quiz1, 2:quiz2)>>");
+			Scanner choise = new Scanner(System.in);
+			int num = choise.nextInt();
+			switch (num) {
+				case 1: {
+					quiz1();
+					break;
+				}
+				case 2: {
+					quiz2();
+					break;
+				}
+				default: {
+					System.exit(0);
+				}
+			}
+		}
+	}
+}
