@@ -1,0 +1,362 @@
+import java.util.Scanner;
+
+	//1
+	class Point {
+		private int x, y; // 한 점을 구성하는 x, y 좌표
+		public void set(int x, int y) {
+			this.x = x; this.y = y;
+		}
+		public void showPoint() { // 점의 좌표 출력
+			System.out.println("(" + x + "," + y + ")");
+		}
+	}
+	class ColorPoint extends Point {
+		private String color; // 점의 색
+		public void setColor(String color) {
+			this.color = color;
+		}
+		public void showColorPoint() { // 컬러 점의 좌표 출력
+			System.out.print(color);
+			showPoint(); // Point 클래스의 showPoint() 호출
+		}
+	}
+	
+	//2
+	class Person {
+		private int weight;
+		int age;
+		protected int height;
+		public String name;
+		public void setWeight(int weight) {
+			this.weight = weight;
+		}
+		public int getWeight() {
+			return weight;
+		}
+	}
+	class Student extends Person {
+		public void set() {
+			System.out.print("나이, 이름, 키, 몸무게 순으로 입력 >>");
+			Scanner set = new Scanner(System.in);
+			age = set.nextInt(); // 슈퍼 클래스의 디폴트 멤버 접근 가능
+			name = set.next(); // 슈퍼 클래스의 public 멤버 접근 가능
+			height = set.nextInt(); // 슈퍼 클래스의 protected 멤버 접근 가능
+			// weight = 99; // 오류. 슈퍼 클래스의 private 접근 불가
+			setWeight(set.nextInt()); // private 멤버 weight은 setWeight()으로 간접 접근
+		}
+		public void printall() {
+			System.out.println(this.age+" "+this.name+" "+this.height+" "+getWeight());
+		}
+	}
+	
+	//3
+	class Point3 {
+		private int x, y; // 한 점을 구성하는 x, y 좌표
+		public Point3() {
+			this.x = this.y = 0;
+		}
+		public Point3(int x, int y) {
+			this.x = x; this.y = y;
+		}
+		public void showPoint() { // 점의 좌표 출력
+			System.out.println("(" + x + "," + y + ")");
+		}
+	}
+	class ColorPoint3 extends Point3 {
+		private String color; // 점의 색
+		public ColorPoint3(int x, int y, String color) {
+			super(x, y); // Point의 생성자 Point(x, y) 호출
+			this.color = color;
+		}
+		public void showColorPoint3() { // 컬러 점의 좌표 출력
+			System.out.print(color);
+			showPoint(); // Point 클래스의 showPoint() 호출
+		}
+	}
+	
+	//4	
+	class Person4 { }
+	class Student4 extends Person4 { }
+	class Researcher4 extends Person4 { }
+	class Professor4 extends Researcher4 { }
+	
+	//5
+	class Shape { // 슈퍼 클래스
+		public Shape next;
+		public Shape() { next = null; }
+		public void draw() {
+			System.out.println("Shape");
+		}
+	}
+	class Line extends Shape {
+		public void draw() { // 메소드 오버라이딩
+			System.out.println("Line");
+		}
+	}
+	class Rect extends Shape {
+		public void draw() { // 메소드 오버라이딩
+			System.out.println("Rect");
+		}
+	}
+	class Circle extends Shape {
+		public void draw() { // 메소드 오버라이딩
+			System.out.println("Circle");
+		}
+	}
+	
+	//6	
+	class Weapon {
+		protected int fire() {
+			return 1; // 무기는 기본적으로 한 명만 살상
+		}
+	}
+	class Cannon extends Weapon {
+		@Override
+		protected int fire() { // 오버라이딩
+			return 10; // 대포는 한 번에 10명을 살상
+		}
+	}
+	
+	//7	
+	abstract class Calculator {
+		public abstract int add(int a, int b);
+		public abstract int subtract(int a, int b);
+		public abstract double average(int[] a);
+	}
+	class GoodCalc extends Calculator {
+		@Override
+		public int add(int a, int b) { // 추상 메소드 구현
+			return a + b;
+		}
+		@Override
+		public int subtract(int a, int b) { // 추상 메소드 구현
+			return a - b;
+		}
+		@Override
+		public double average(int[] a) { // 추상 메소드 구현
+			double sum = 0;
+			for (int i = 0; i <a.length; i++)
+				sum += a[i];
+			return sum/a.length;
+		}
+	}
+	
+	//8	
+	interface PhoneInterface { // 인터페이스 선언
+		final int TIMEOUT = 10000; // 상수 필드 선언
+		void sendCall(); // 추상 메소드
+		void receiveCall(); // 추상 메소드
+		default void printLogo() { // default 메소드
+			System.out.println("** Phone **");
+		}
+	}
+	class SamsungPhone implements PhoneInterface { // 인터페이스 구현
+		// PhoneInterface의 모든 메소드 구현
+		@Override
+		public void sendCall() {
+			System.out.println("띠리리리링");
+		}
+		@Override
+		public void receiveCall() {
+			System.out.println("전화가 왔습니다.");
+		}
+		// 메소드 추가 작성
+		public void flash() { System.out.println("전화기에 불이 켜졌습니다."); }
+	}
+	
+	//9
+	//8번의 PhoneInterface도 사용됨
+	interface MobilePhoneInterface extends PhoneInterface {
+		void sendSMS();
+		void receiveSMS();
+	}
+	interface MP3Interface { // 인터페이스 선언
+		public void play();
+		public void stop();
+	}
+	class PDA { // 클래스 작성
+		public int calculate(int x, int y) {
+		return x + y;
+		}
+	}
+	class SmartPhone extends PDA implements
+	MobilePhoneInterface, MP3Interface {
+		// MobilePhoneInterface의 추상 메소드 구현
+		@Override
+		public void sendCall() {
+			System.out.println("따르릉따르릉~~");
+		}
+		@Override
+		public void receiveCall() {
+			System.out.println("전화 왔어요.");
+		}
+		@Override
+		public void sendSMS() {
+			System.out.println("문자갑니다.");
+		}
+		@Override
+		public void receiveSMS() {
+			System.out.println("문자왔어요.");
+		}
+		// MP3Interface의 추상 메소드 구현
+		@Override
+		public void play() {
+			System.out.println("음악 연주합니다.");
+		}
+		@Override
+		public void stop() {
+			System.out.println("음악 중단합니다.");
+		}
+		// 추가로 작성한 메소드
+		public void schedule() {
+			System.out.println("일정 관리합니다.");
+		}
+	}
+
+public class _5quiz {
+	
+	public static void example1() {
+		Point p = new Point(); // Point 객체 생성
+		p.set(1, 2); // Point 클래스의 set() 호출
+		p.showPoint();
+		ColorPoint cp = new ColorPoint(); // ColorPoint 객체
+		cp.set(3, 4); // Point의 set() 호출
+		cp.setColor("red"); // ColorPoint의 setColor() 호출
+		cp.showColorPoint(); // 컬러와 좌표 출력
+	}
+	
+
+	public static void example2() {
+		Student s = new Student();
+		s.set();
+		s.printall();
+	}
+	
+	
+	public static void example3() {
+		ColorPoint3 cp = new ColorPoint3(5, 6, "blue");
+		cp.showColorPoint3();
+		
+	}
+	
+	
+	static void print(Person4 p) {
+		if(p instanceof Person4)
+			System.out.print("Person ");
+		if(p instanceof Student4)
+			System.out.print("Student ");
+		if(p instanceof Researcher4)
+			System.out.print("Researcher ");
+		if(p instanceof Professor4)
+			System.out.print("Professor ");
+		System.out.println();
+	}
+	public static void example4() {
+		System.out.print("new Student() ->\t"); print(new Student4());
+		System.out.print("new Researcher() ->\t"); print(new Researcher4());
+		System.out.print("new Professor() ->\t"); print(new Professor4());
+	}
+	
+	
+	static void paint(Shape p) {
+		p.draw(); // p가 가리키는 객체 내에 오버라이딩된 draw() 호출.
+		// 동적 바인딩
+	}
+	public static void example5() {
+		Line line = new Line();
+		paint(line);
+		paint(new Shape());
+		paint(new Line());
+		paint(new Rect());
+		paint(new Circle());
+	}
+	
+	
+	public static void example6() {
+		Weapon weapon;
+		weapon = new Weapon();
+		System.out.println("기본 무기의 살상 능력은 " +
+				weapon.fire());
+		weapon = new Cannon();
+		System.out.println("대포의 살상 능력은 " +
+				weapon.fire());
+	}
+	
+	
+	public static void example7() {
+		GoodCalc c = new GoodCalc();
+		System.out.println(c.add(2,3));
+		System.out.println(c.subtract(2,3));
+		System.out.println(c.average(new int [] { 2,3,4 }));
+	}
+	
+	
+	public static void example8() {
+		SamsungPhone phone = new SamsungPhone();
+		phone.printLogo();
+		phone.sendCall();
+		phone.receiveCall();
+		phone.flash();
+	}
+	
+	
+	public static void example9() {
+		SmartPhone phone = new SmartPhone();
+		phone.printLogo();
+		phone.sendCall();
+		phone.play();
+		System.out.println("3과 5를 더하면 " +
+		phone.calculate(3,5));
+		phone.schedule();
+	}
+
+	
+	public static void main(String[] args) {
+		while (true) {
+			System.out.print("\n예제 5-n >> 1~9사이로 n 입력 >>");
+			Scanner choise = new Scanner(System.in);
+			int num = choise.nextInt();
+			switch (num) {
+				case 1: {
+					example1();
+					break;
+				}
+				case 2: {
+					example2();
+					break;
+				}
+				case 3: {
+					example3();
+					break;
+				}
+				case 4: {
+					example4();
+					break;
+				}
+				case 5: {
+					example5();
+					break;
+				}
+				case 6: {
+					example6();
+					break;
+				}
+				case 7: {
+					example7();
+					break;
+				}
+				case 8: {
+					example8();
+					break;
+				}
+				case 9: {
+					example9();
+					break;
+				}
+				default: {
+					System.exit(0);
+				}
+			}
+		}
+	}
+}
